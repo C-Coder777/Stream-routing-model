@@ -104,11 +104,11 @@ implicit none
 integer, parameter:: ngrid=25 ! Number of grid cells within the watershed
 real, parameter:: dt=24 ! Time step of model simulation
 integer, parameter:: startyear=2002 ! Year starting the routing
-integer, parameter:: endyear=2015 ! Year ending the routing
+integer, parameter:: endyear=2021 ! Year ending the routing
 character(72), parameter:: gridinfo_dir='./PARAMETER/zones.txt'  ! Directory of grid information file
 character(72), parameter:: output_daily_dir='./results_CJ/routing_results_day(40).txt' ! Directory of output daily streamflow file
 character(72), parameter:: output_monthly_dir='./results_CJ/routing_results_month(40).txt' ! Directory of output daily streamflow file
-character(72), parameter:: flux_dir='./flux2002-2011/fluxes_' ! Directory of flux files
+character(72), parameter:: flux_dir='./flux2002-2021/fluxes_' ! Directory of flux files
 character(72), parameter:: qobs_dir='./PARAMETER/Qo.txt' ! Directory of observed streamflow data file                
 
 integer  nt, nmus  ! Total number of time steps for model simulation
@@ -125,16 +125,8 @@ character*72 filename
 integer nmyfile
 
 
-!--
-!real,parameter:: sm=1.5
-!real,parameter:: ki=0.59
-!real,parameter:: kg=0.01
-!real,parameter:: cs=0.59
-!real,parameter:: ci=0.9
-!real,parameter:: cg=0.995
-real,parameter:: v=6
-!real,parameter:: kmus=18
-!real,parameter:: xmus=0.3
+
+real, parameter:: v=6
 real, parameter:: qrs00=0. ! Initial surface discharge at each grid cell
 real, parameter:: qri00=0. ! Initial interflow discharge at each grid cell
 real, parameter:: qrg00=0. ! Initial groundwater discharge at each grid cell
@@ -373,8 +365,6 @@ do i=1,nt
 
 end do 
 
-
-
  !Calculate Nash and Bias for daily streamflow simulation
 open(unit=131,file='NS_day.txt')
 open(unit=132,file='NS_month.txt')
@@ -390,17 +380,9 @@ call nash_bias(j,qobsmonth,qcalmonth,nash_month,bias)
 Qave(1: nn)=qcalmonth(1: nn)
 Q_out(1:nn)=qcalmonth(1: nn)
 Q(1:n)=qj(1:n)
-!write(*,*) kmus,xmus,Q
 close (1)
 close (2)
 close (5)
-!write(*,*) Q
-!pause
-!do i=1, n
-!write(*,*) Q_out(i)
-!end do
-
-call Likelihood(Qo_ave, Qave, nn, log_lik)
 
 return
 End
